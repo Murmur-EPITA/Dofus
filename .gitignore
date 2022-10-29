@@ -2,3 +2,4 @@
 venv
 # game directory
 game
+__pycache__
