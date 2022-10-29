@@ -1,4 +1,4 @@
-import random
+from src.utils.randomize import random_between as rb
 import threading
 import time
 
@@ -23,6 +23,18 @@ class ClickMouse(threading.Thread):
     def stop_clicking(self):
         self.running = False
 
+    def go_up(self):
+        self.mouse.position = (1250 / 2, 45)
+
+    def go_right(self):
+        self.mouse.position = (1250 - 30, 1000 / 2)
+
+    def go_down(self):
+        self.mouse.position = (1250 / 2, 1000 - 130)
+
+    def go_left(self):
+        self.mouse.position = (30, 1000 / 2 + 10)
+
     def exit(self):
         self.stop_clicking()
         self.program_running = False
@@ -30,12 +42,9 @@ class ClickMouse(threading.Thread):
     # method to check and run loop until
     # it is true another loop will check
     # if it is set to true or not,
-    # for mouse click it set to button
-    # and delay.
     def run(self):
-        print('Click Controller initialized.')
         while self.program_running:
             while self.running:
                 self.mouse.click(button=self.button, count=1)
-                time.sleep(random.uniform(self.delay - 1, self.delay + 1))
+                time.sleep(rb(self.delay - 1, self.delay + 1))
             time.sleep(0.1)
