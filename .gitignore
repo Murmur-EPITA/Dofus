@@ -3,3 +3,4 @@ venv
 # game directory
 game
 __pycache__
+.idea
