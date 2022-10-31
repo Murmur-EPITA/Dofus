@@ -1,0 +1,34 @@
+Lors de séléction d'item
+	getData(dns+'getRessourceData.php?ressourceId={0}&groupId={1}', [ressourceId, map.options.data.id], addRessourceMarkers, {typeId: typeId});
+
+dns = "https://dofus-map.com/"
+Pour Bambou Sombre:
+	resourceId: 61
+	typeId: 1
+TEST	https://dofus-map.com/getRessourceData.php?ressourceId=61&groupId=1
+
+function changeGroup(groupId, args) {
+	getData(dns+'getGroupData.php?groupId={0}', [groupId], setGroup, args);
+}
+
+TEST	https://dofus-map.com/getGroupData.php?groupId=1
+
+resourceIds: & groupId = 0
+	poissons de 1 à 22
+	cereales de 23 à 35
+	plantes de 36 à 46
+	bois de 47 à 65
+	minerais de 68 à 79
+	se choppe avec du getRessourceData
+
+requête pour le blé donne: 23&0&4*0:24+-29:-40+-21:-40_8*1:23+6:-28+13:14+-27:-43+-24:-40_12
+			    | | | x y |
+			    | | |     |
+			    | | |     |
+			    | | |     |
+		 resourceId | | |     |
+		      groupId | |     |
+		       quantité	|     |
+		delimiteur de couples |
+
+4*0:24+-29:-40+-21:-40  8*1:23+6:-28+13:14+-27:-43+-24:-40  12*1:28+3:-26+6:-29  10*2:23 24+3:-22+5:-25+9:8_1*3:22 27+4:-23+5:4 7 31 -14+6:8+7:-11+-30:-39+-28:-45+-26:-43 -42 -41+-24:-43 -42+-22:-44_7*3:23 24 -23+-25:-40_2*3:26+4:6 28+5:-9 -30+8:11_3*3:-9 -30+7:9+9:21_11*4:-27+7:-23+8:5 6+-24:-41_23*4:-30_14*4:-29+5:6_9*5:-22+7:-25+-26:-39_15*6:6_6*6:-30+8:9+9:9 -23_5*6:-21+7:-21+-28:-44+-26:-38+-16:-13_17*9:5+-24:-39_26*9:6_16*10:8_18*-23:-40"

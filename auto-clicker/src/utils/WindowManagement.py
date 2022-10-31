@@ -2,6 +2,10 @@ from pygetwindow import Window, getWindowsWithTitle, getAllTitles
 
 
 def find_dofus_window() -> Window:
+    '''
+    Look in current windows for the Dofus one thanks to its title.
+    :return: dofusWindow :Window
+    '''
     titles = getAllTitles()
     title = None
     for tmp_title in titles:
@@ -15,6 +19,9 @@ def find_dofus_window() -> Window:
 class WindowManagement:
     def __init__(self):
         self.window = find_dofus_window()
+        self.window.show()
+        self.window.maximize()
+        self.window.activate()
         self.move()
         self.resize()
 
