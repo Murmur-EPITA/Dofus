@@ -36,10 +36,15 @@ def add_to_hashmap(resourceId: int, groupId: int, nbResources: int, x: int, y: i
     '''
     id = ','.join([str(x), str(y)])
     group = DofusMap(groupId)
-    resource: Resources = RESOURCES[resourceId]
+    resource: Resources = RESOURCES[resourceId][0]
     square = dofusMaps.get(group.name[:1] + group.name[1:].lower()).get(id)
     if square:
         square.resources.append((resource, nbResources))
+        dico = RESOURCES.get(resourceId)[1]
+        if groupId in dico.keys():
+            dico[groupId].append(id)
+        else:
+            dico[groupId] = [id]
 
 
 def parse_squares(string: str, mapId: int):
@@ -120,6 +125,8 @@ def parse_resources_request(response: str):
     byQuantity = toParse.split('_')
     for quantityGroup in byQuantity:
         tmp = quantityGroup.split('*')
+        if tmp[0] == '\n':  # no quantity means no resource
+            return
         nbResources: int = int(tmp[0])
         quantityGroup2: str = tmp[1]
         groups: list[str] = quantityGroup2.split('+')
@@ -132,21 +139,45 @@ def parse_resources_request(response: str):
 
 def generate_maps(maps: list[DofusMap]):
     for dofusMap in maps:
+        """
+        Get map's squares.
+        """
         print('\n' + dofusMap.name + ":", "Fetching map data.")
         mapName = dofusMap.name[:1] + dofusMap.name[1:].lower()
         if not exists("maps/empty_{mapName}.py".format(mapName=mapName.lower())):
-            response: Response = get(url="https://dofus-map.com/getGroupData.php?groupId=" + str(dofusMap))
-            parse_map_request(response.json())
+            request = "https://dofus-map.com/getGroupData.php?groupId=" + str(dofusMap)
+            response: dict = get(url=request).json()
+            parse_map_request(response)
+            with open("../requests/groupData.txt", 'w') as file:
+                file.write(request + '\n' + str(response))
             print(dofusMap.name + ":", "Empty Map initialized and writtn in 'maps' folder.")
         else:
             print(dofusMap.name + ":", "Empty Map already exists in 'maps' folder.")
         print(dofusMap.name + ":", "Fetching resources data.")
 
-        for key, value in RESOURCES.items():
-            response: str = get(url="https://dofus-map.com/getRessourceData.php?ressourceId={id}&groupId={groupId}".format(id=key, groupId=(str(dofusMap)))).text[1:-1]
-            parse_resources_request(response)
+        """
+        Get map's resources.
+        """
+        path = "../requests/ressourceData_{mapName}.txt".format(mapName=mapName)
+        if not exists(path):
+            print('No ressourceData file found. Getting it from website...')
+            for key, value in RESOURCES.items():
+                request = "https://dofus-map.com/getRessourceData.php?ressourceId={id}&groupId={groupId}".format(id=key, groupId=(str(dofusMap)))
+                response: str = get(url=request).text[1:-1]
+                with open(path, 'a') as file:
+                    file.write(request + '\n' + response + '\n')
+                parse_resources_request(response)
+        else:
+            print('ressourceData file found. Parsing it...')
+            with open(path, 'r') as file:
+                responses: list[str] = file.readlines()
+            for response in responses[1::2]:
+                parse_resources_request(str(response))
         print(dofusMap.name + ":", "Filled Map initialized. Writing it to file...")
 
+        """
+        Write filled map in file.
+        """
         with open("maps/{mapName}.py".format(mapName=mapName), "w") as file:
             file.write( "from src.utils.DofusMapEnum import DofusMap\n"
                         "from src.utils.Square import Square\n"
@@ -162,9 +193,25 @@ def generate_maps(maps: list[DofusMap]):
             file.write('}')
         print(dofusMap.name + ":", "Filled Map written in 'maps' folder.")
 
+    """
+    Write 'resources' dict into a file.
+    """
+    print("\nWriting resources into 'maps' folder.\n")
+    with open("maps/resources.py", "w") as file:
+        file.write('from src.utils.RESOURCES import *\n\n')
+        file.write('RESOURCES = {\n')
+        for key, (resource, dico) in RESOURCES.items():
+            string = "{enumName}: ({prefix}({enumName}.value, {enumName}.name.lower()), {coordinatesList}),".format(
+                enumName=resource.linkedEnum.__name__ + '.' + key.name,
+                prefix=type(resource).__name__,
+                coordinatesList=dico
+            )
+            file.write('\t' + string + '\n')
+        file.write('}')
+
 
 if __name__ == '__main__':
     # gen all maps
     generate_maps(list(DofusMap))
-    #generate_maps([DofusMap.INCARNAM])
+    # generate_maps([DofusMap.INCARNAM])
     # print(dofusMaps['Incarnam'])
