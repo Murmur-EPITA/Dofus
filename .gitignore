@@ -4,3 +4,6 @@ venv
 game
 __pycache__
 .idea
+*.iml
+*.xml
+*.xml

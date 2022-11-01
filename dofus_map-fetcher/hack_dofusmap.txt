@@ -13,13 +13,21 @@ function changeGroup(groupId, args) {
 
 TEST	https://dofus-map.com/getGroupData.php?groupId=1
 
-resourceIds: & groupId = 0
+resourceIds:
 	poissons de 1 à 22
 	cereales de 23 à 35
 	plantes de 36 à 46
 	bois de 47 à 65
 	minerais de 68 à 79
 	se choppe avec du getRessourceData
+
+groupIds:
+    Amaknien: 0
+    Incarnam: 1
+    Enutrosor: 2
+    Srambad: 3
+    Xélorium: 4
+    Ecaflipus: 5
 
 requête pour le blé donne: 23&0&4*0:24+-29:-40+-21:-40_8*1:23+6:-28+13:14+-27:-43+-24:-40_12
 			    | | | x y |
