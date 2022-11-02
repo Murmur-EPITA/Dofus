@@ -1,5 +1,11 @@
 from src.utils.DofusMapEnum import DofusMap
 from src.utils.Square import Square
+from src.utils.RESOURCES import CEREAL
+from src.utils.RESOURCES import FISH
+from src.utils.RESOURCES import FLOWER
+from src.utils.RESOURCES import RESOURCES
+from src.utils.RESOURCES import ORE
+from src.utils.RESOURCES import WOOD
 
 Srambad = {
 	'9,3': Square(x=9, y=3, dofusMap=DofusMap.SRAMBAD, city="Astrub", place="", adjs=['(9, 2)', '(10, 3)', '(9, 4)', '(8, 3)'], resources=[], specialSquares=[]),

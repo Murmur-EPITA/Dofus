@@ -1,23 +1,19 @@
 from src.utils.DofusMapEnum import DofusMap
-from src.utils.RESOURCES import Cereal as C
-from src.utils.RESOURCES import Fish as Fi
-from src.utils.RESOURCES import Flower as Fl
-from src.utils.RESOURCES import Ore as O
 from src.utils.RESOURCES import Resources
-from src.utils.RESOURCES import Wood as W
+
 
 class SpecialSquare:
     pass
 
 
 class Square:
-    '''
+    """
     Represent a single square from the huge Dofus map.
         adjs is represented this way:
         [DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN, DIRECTION.LEFT]
 
         specialSquares are sub-worlds such as mines etc.
-    '''
+    """
 
     def __init__(self,
                  x: int,

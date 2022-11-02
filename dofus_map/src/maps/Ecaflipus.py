@@ -1,7 +1,11 @@
 from src.utils.DofusMapEnum import DofusMap
 from src.utils.Square import Square
+from src.utils.RESOURCES import CEREAL
+from src.utils.RESOURCES import FISH
 from src.utils.RESOURCES import FLOWER
 from src.utils.RESOURCES import RESOURCES
+from src.utils.RESOURCES import ORE
+from src.utils.RESOURCES import WOOD
 
 Ecaflipus = {
 	'-9,-22': Square(x=-9, y=-22, dofusMap=DofusMap.ECAFLIPUS, city="Astrub", place="", adjs=['(-9, -23)', '(-8, -22)', '(-9, -21)', '(-10, -22)'], resources=[], specialSquares=[]),

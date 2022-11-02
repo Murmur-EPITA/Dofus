@@ -1,5 +1,11 @@
 from src.utils.DofusMapEnum import DofusMap
 from src.utils.Square import Square
+from src.utils.RESOURCES import CEREAL
+from src.utils.RESOURCES import FISH
+from src.utils.RESOURCES import FLOWER
+from src.utils.RESOURCES import RESOURCES
+from src.utils.RESOURCES import ORE
+from src.utils.RESOURCES import WOOD
 
 Xelorium = {
 	'4,-6': Square(x=4, y=-6, dofusMap=DofusMap.XELORIUM, city="Astrub", place="", adjs=['(4, -7)', '(5, -6)', '(4, -5)', '(3, -6)'], resources=[], specialSquares=[]),
