@@ -27,7 +27,7 @@ class Main:
         if line == "":
             return
         # {'0,0': [(0, -1), (1, 0), None, (-1, 0)]}
-        string = "^\t{ ('[0-9-]+,[0-9-]+'): (\[.*\]) }"
+        string = "^\t{ '([0-9-]+,[0-9-]+)': (\[.*\]) },"
         lol = match(string, line)
         id = lol.group(1)
         liste = lol.group(2)
@@ -37,13 +37,15 @@ class Main:
     def write_adj(self, direction_to_disable: Direction):
         id = self.player.get_id()
         # new pos
+        print('adjs writ_ajd', adjs)
+        print('keys', adjs.keys())
         if id not in adjs.keys():
             adjs[id] = get_adjs(self.player.posX.pos, self.player.posY.pos)
             adjs[id][direction_to_disable] = None
             string = "\t{ '" + id + "': [" + str(adjs[id][0]) + ", " + str(adjs[id][1]) + ", " + str(adjs[id][2]) + \
-                     ", " + str(adjs[id][3]) + "] }\n"
+                     ", " + str(adjs[id][3]) + "] },\n"
             if exists(self.adjsDir):
-                print("New pos written to adjs file.")
+                print("New pos ({id}) written to adjs file.".format(id=id))
                 with open(self.adjsDir, 'a') as file:
                     file.write(string)
             else:
@@ -56,7 +58,7 @@ class Main:
             if adjs[id][direction_to_disable]:
                 adjs[id][direction_to_disable] = None
                 string = "\t{ '" + id + "': [" + str(adjs[id][0]) + ", " + str(adjs[id][1]) + ", " + str(adjs[id][2]) + \
-                         ", " + str(adjs[id][3]) + "] }\n"
+                         ", " + str(adjs[id][3]) + "] },"
 
                 text = open(self.adjsDir).read()
                 new_text = '\n'.join(string if line.startswith(str_to_replace) else line for line in text.splitlines())
@@ -65,7 +67,7 @@ class Main:
                 tmp: list[str] = get_adjs(self.player.posX.pos, self.player.posY.pos)
                 adjs[id][direction_to_disable] = tmp[direction_to_disable]
                 string = "\t{ '" + id + "': [" + str(adjs[id][0]) + ", " + str(adjs[id][1]) + ", " + str(adjs[id][2]) + \
-                         ", " + str(adjs[id][3]) + "] }\n"
+                         ", " + str(adjs[id][3]) + "] },"
 
                 text = open(self.adjsDir).read()
                 new_text = '\n'.join(string if line.startswith(str_to_replace) else line for line in text.splitlines())
@@ -118,9 +120,10 @@ class Main:
                 listener.stop()
 
         if exists(self.adjsDir):
+            print("Parsing existing adjs file.")
             with open(self.adjsDir, 'r') as file:
-                line = file.readline()
-                self.parse_adjs_file(line)
+                for line in file.readlines():
+                    self.parse_adjs_file(line)
 
         self.windowManagement = WindowManagement()
         sleep(2)

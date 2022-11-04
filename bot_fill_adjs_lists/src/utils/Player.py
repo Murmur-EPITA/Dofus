@@ -8,12 +8,6 @@ class PosX:
         self.mouse = mouse
         self.pos = pos
 
-    def __eq__(self, other: int):
-        return self.pos == other
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
     def __iadd__(self, other: int):
         # self.mouse.go_right(self.player.windowManagement.window.size)
         return self.player.posX.pos + other
@@ -31,12 +25,6 @@ class PosY:
         self.player = player
         self.mouse = mouse
         self.pos = pos
-
-    def __eq__(self, other: int):
-        return self.pos == other
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
     def __iadd__(self, other: int):
         # self.mouse.go_down(self.player.windowManagement.window.size)
