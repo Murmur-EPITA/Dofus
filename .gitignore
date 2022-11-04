@@ -7,3 +7,6 @@ __pycache__
 *.iml
 *.xml
 *.xml
+*.iml
+auto-clicker/.idea/misc.xml
+*.xml

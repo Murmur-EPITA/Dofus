@@ -24,6 +24,8 @@ class Main:
     adjsDir: str = 'adjs/adjs.py'
 
     def parse_adjs_file(self, line: str):
+        if line == "":
+            return
         # {'0,0': [(0, -1), (1, 0), None, (-1, 0)]}
         string = "^\t{ ('[0-9-]+,[0-9-]+'): (\[.*\]) }"
         lol = match(string, line)
@@ -34,48 +36,40 @@ class Main:
 
     def write_adj(self, direction_to_disable: Direction):
         id = self.player.get_id()
+        # new pos
         if id not in adjs.keys():
             adjs[id] = get_adjs(self.player.posX.pos, self.player.posY.pos)
             adjs[id][direction_to_disable] = None
             string = "\t{ '" + id + "': [" + str(adjs[id][0]) + ", " + str(adjs[id][1]) + ", " + str(adjs[id][2]) + \
                      ", " + str(adjs[id][3]) + "] }\n"
             if exists(self.adjsDir):
+                print("New pos written to adjs file.")
                 with open(self.adjsDir, 'a') as file:
                     file.write(string)
             else:
+                print("Creating adjs file.")
                 with open(self.adjsDir, 'w') as file:
                     file.write(string)
-
+        # pos already written
         else:
             str_to_replace = "\t{ '" + id + "': "
             if adjs[id][direction_to_disable]:
                 adjs[id][direction_to_disable] = None
                 string = "\t{ '" + id + "': [" + str(adjs[id][0]) + ", " + str(adjs[id][1]) + ", " + str(adjs[id][2]) + \
                          ", " + str(adjs[id][3]) + "] }\n"
-                # with open(self.adjsDir, 'r') as file:
-                #     text = file.read()
-                # new_text = re.sub(str_to_replace, string, text)
-                # with open(self.adjsDir, 'w') as file:
-                #     file.write(new_text)
-                for line in input(self.adjsDir, inplace=True):
-                    if line.strip().startswith(str_to_replace):
-                        line = string
-                    sys.stdout.write(line)
+
+                text = open(self.adjsDir).read()
+                new_text = '\n'.join(string if line.startswith(str_to_replace) else line for line in text.splitlines())
+                open(self.adjsDir, 'w').write(new_text)
             else:
                 tmp: list[str] = get_adjs(self.player.posX.pos, self.player.posY.pos)
                 adjs[id][direction_to_disable] = tmp[direction_to_disable]
                 string = "\t{ '" + id + "': [" + str(adjs[id][0]) + ", " + str(adjs[id][1]) + ", " + str(adjs[id][2]) + \
                          ", " + str(adjs[id][3]) + "] }\n"
 
-                # with open(self.adjsDir, 'r') as file:
-                #     text = file.read()
-                # new_text = re.sub(str_to_replace, string, text)
-                # with open(self.adjsDir, 'w') as file:
-                #     file.write(new_text)
-                for line in input(self.adjsDir, inplace=True):
-                    if line.strip().startswith(str_to_replace):
-                        line = string
-                    sys.stdout.write(line)
+                text = open(self.adjsDir).read()
+                new_text = '\n'.join(string if line.startswith(str_to_replace) else line for line in text.splitlines())
+                open(self.adjsDir, 'w').write(new_text)
 
     def __init__(self):
         def on_press(key: KeyCode | Key):
