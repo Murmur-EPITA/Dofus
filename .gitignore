@@ -10,3 +10,4 @@ __pycache__
 *.iml
 auto-clicker/.idea/misc.xml
 *.xml
+*.c

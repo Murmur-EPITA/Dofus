@@ -4,8 +4,6 @@ from re import match
 from pynput.keyboard import Listener
 from pynput.mouse import Controller
 from time import sleep
-import sys
-from fileinput import input
 
 from src.utils.CONSTANTS import *
 from src.utils.ClickMouse import ClickMouse
