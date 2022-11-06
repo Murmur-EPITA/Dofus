@@ -1,11 +1,7 @@
 from os.path import exists
 from ast import literal_eval
 from re import match
-
-import pyautogui
 from pynput.keyboard import Listener
-from pynput.mouse import Controller
-from time import sleep
 
 from src.graph.graph import GraphMap
 from src.utils.CONSTANTS import *
@@ -15,17 +11,16 @@ from src.utils.WindowManagement import WindowManagement
 from src.tkinter_frames.position import ask_pos
 from src.utils.DIRECTION import Direction
 from src.graph.MAP import dofusMaps
-
+from src.utils.ocr import get_square_infos, ScreenScanner
+from src.utils.other import getPercent
 from src.utils.write_resources import adjs, get_adjs
-
-global x, y
 
 
 class Main:
-    adjsDir: str = 'adjs/adjs.py'
+    adjsDir: str = 'src/adjs/adjs.py'
 
     def parse_adjs_file(self, line: str):
-        if line == "":
+        if line == "" or line == "\n":
             return
         # {'0,0': [(0, -1), (1, 0), None, (-1, 0)]}
         string = "^\t{ '([0-9-]+,[0-9-]+)': (\[.*\]) },"
@@ -76,27 +71,24 @@ class Main:
 
     def __init__(self):
         def on_press(key: KeyCode | Key):
-            try:
-                x, y = pyautogui.locateCenterOnScreen("img/left_arrow.png", confidence=0.7)
-                self.mouse.position = (x, y)
-            except:
-                pass
-
 
             if key == UP_ARROW:
-                self.click_thread.go_up(self.windowManagement.window.size, self.player)
+                self.click_thread.go_up(self.windowManagement.window, self.player)
 
             elif key == RIGHT_ARROW:
-                self.click_thread.go_right(self.windowManagement.window.size, self.player)
+                self.click_thread.go_right(self.windowManagement.window, self.player)
 
             elif key == DOWN_ARROW:
-                self.click_thread.go_down(self.windowManagement.window.size, self.player)
+                self.click_thread.go_down(self.windowManagement.window, self.player)
 
             elif key == LEFT_ARROW:
-                self.click_thread.go_left(self.windowManagement.window.size, self.player)
+                self.click_thread.go_left(self.windowManagement.window, self.player)
 
-            elif key == BUTTON_POS:
-                self.player.posX.pos, self.player.posY.pos = ask_pos()
+            elif key == LOAD_POS:
+                try:
+                    self.player.posX.pos, self.player.posY.pos, city, place = get_square_infos(self.windowManagement.window)
+                except:
+                    print('Screenshot not usable')
 
             elif key == ADD_UP:
                 self.write_adj(Direction.UP)
@@ -114,7 +106,7 @@ class Main:
                 self.windowManagement.move()
 
             elif key == TERMINATE:
-                # self.click_thread.exit()
+                screenScanner.exit()
                 listener.stop()
 
         if exists(self.adjsDir):
@@ -124,16 +116,23 @@ class Main:
                     self.parse_adjs_file(line)
 
         self.windowManagement = WindowManagement()
-        sleep(1)
-        x, y = ask_pos()
+        self.click_thread = ClickMouse()
 
-        self.mouse = Controller()
-        self.click_thread = ClickMouse(self.mouse)
-        # self.click_thread.start()
+        try:
+            x, y, city, place = get_square_infos(self.windowManagement.window)
+            self.player = Player(self.windowManagement, self.click_thread, GraphMap(maps=dofusMaps), x, y)
+        except:
+            try:
+                x, y = ask_pos()
+                self.player = Player(self.windowManagement, self.click_thread, GraphMap(maps=dofusMaps), x, y)
+            except NameError:
+                print("No position has been given. Closing.")
+                exit()
+            print('Screenshot not usable.')
 
-        self.player = Player(self.windowManagement, self.click_thread, GraphMap(maps=dofusMaps), x, y)
+        screenScanner: ScreenScanner = ScreenScanner(self.player)
+        screenScanner.start()
 
-        sleep(2)
         with Listener(on_press=on_press) as listener:
             listener.join()
 

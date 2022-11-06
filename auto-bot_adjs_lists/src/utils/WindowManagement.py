@@ -1,4 +1,6 @@
-from pygetwindow import Window, getWindowsWithTitle, getAllTitles
+from time import sleep
+
+from pyautogui import getWindowsWithTitle, Window, getAllTitles
 
 
 def find_dofus_window() -> Window:
@@ -19,11 +21,10 @@ def find_dofus_window() -> Window:
 class WindowManagement:
     def __init__(self):
         self.window = find_dofus_window()
-        self.window.show()
-        if self.window.isMinimized:
-            self.window.restore()
-        # self.window.maximize()
+        self.window.minimize()
+        self.window.restore()
         self.window.activate()
+        self.resize()
         self.move()
         self.resize()
 
@@ -33,4 +34,5 @@ class WindowManagement:
     def resize(self):
         # width is 1.25x the height
         # self.window.resizeTo(1245, 1000)
-        self.window.resizeTo(1718, 1059)
+        self.window.resizeTo(1800, 1200)
+        self.window.resize(1, 1)

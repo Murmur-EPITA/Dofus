@@ -52,7 +52,7 @@ class Player:
                 self.mouse.go_down(self.windowManagement.window.size, self)
             elif y > ytmp:
                 self.mouse.go_up(self.windowManagement.window.size, self)
-            sleep(DELAY_CLICK)
+            # sleep(DELAY_CLICK)
         print("Arrived at pos", self.get_id())
 
 

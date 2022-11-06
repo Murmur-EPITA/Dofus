@@ -17,6 +17,7 @@ ADD_DOWN = KeyCode(char='s')
 ADD_LEFT = KeyCode(char='q')
 
 MOVE_WINDOW = KeyCode(char='i')
+LOAD_POS = KeyCode(char='u')
 START_AND_STOP = KeyCode(char='a')
 TERMINATE = KeyCode(char='b')
 
