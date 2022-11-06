@@ -2,5 +2,6 @@ pynput
 pygetwindow
 cython
 opencv-python
+pillow
 pyautogui
 networkx

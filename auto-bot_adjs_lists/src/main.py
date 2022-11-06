@@ -1,6 +1,8 @@
 from os.path import exists
 from ast import literal_eval
 from re import match
+
+import pyautogui
 from pynput.keyboard import Listener
 from pynput.mouse import Controller
 from time import sleep
@@ -74,6 +76,12 @@ class Main:
 
     def __init__(self):
         def on_press(key: KeyCode | Key):
+            try:
+                x, y = pyautogui.locateCenterOnScreen("img/left_arrow.png", confidence=0.7)
+                self.mouse.position = (x, y)
+            except:
+                pass
+
 
             if key == UP_ARROW:
                 self.click_thread.go_up(self.windowManagement.window.size, self.player)
@@ -125,6 +133,7 @@ class Main:
 
         self.player = Player(self.windowManagement, self.click_thread, GraphMap(maps=dofusMaps), x, y)
 
+        sleep(2)
         with Listener(on_press=on_press) as listener:
             listener.join()
 
