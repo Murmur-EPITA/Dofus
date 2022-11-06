@@ -6,6 +6,24 @@ from src.utils.MAP import dofusMaps
 from src.utils.RESOURCES import *
 from src.utils.Square import Square
 
+def remove_inexisting_squares():
+    for map in dofusMaps.keys():
+        with open('maps/' + map + '_new.py', 'w') as file:
+            file.write( "from src.utils.DofusMapEnum import DofusMap\n"
+                        "from src.utils.Square import Square\n"
+                        "from src.utils.RESOURCES import CEREAL\n"
+                        "from src.utils.RESOURCES import FISH\n"
+                        "from src.utils.RESOURCES import FLOWER\n"
+                        "from src.utils.RESOURCES import RESOURCES\n"
+                        "from src.utils.RESOURCES import ORE\n"
+                        "from src.utils.RESOURCES import WOOD\n\n")
+            file.write(map + ' = {\n')
+            for id, square in dofusMaps[map].items():
+                for i, adj in enumerate(square.adjs):
+                    if adj not in dofusMaps[map].keys():
+                        square.adjs[i] = None
+                file.write("\t'{key}': {val}".format(key=id, val=square.__repr__()))
+            file.write('}')
 
 def get_adjs(x: int, y: int) -> list[str]:
     """

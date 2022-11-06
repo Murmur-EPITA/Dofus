@@ -6,5 +6,3 @@ class Direction(IntEnum):
     DOWN = 2
     LEFT = 3
 
-
-direction: Direction | None = None

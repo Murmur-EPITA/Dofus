@@ -1,9 +1,8 @@
 import tkinter as tk
 
-
-def ask_pos():
+def settings():
     '''
-    Open a tkinter dialog to ask for current position.
+    Open a tkinter_frames dialog to ask for current position.
     :return: int, int
     '''
     def handle_focus(event):

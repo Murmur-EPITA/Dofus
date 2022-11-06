@@ -5,12 +5,14 @@ from pynput.keyboard import Listener
 from pynput.mouse import Controller
 from time import sleep
 
+from src.graph.graph import GraphMap
 from src.utils.CONSTANTS import *
 from src.utils.ClickMouse import ClickMouse
 from src.utils.Player import Player
 from src.utils.WindowManagement import WindowManagement
 from src.tkinter_frames.position import ask_pos
 from src.utils.DIRECTION import Direction
+from src.graph.MAP import dofusMaps
 
 from src.utils.write_resources import adjs, get_adjs
 
@@ -72,6 +74,7 @@ class Main:
 
     def __init__(self):
         def on_press(key: KeyCode | Key):
+
             if key == UP_ARROW:
                 self.click_thread.go_up(self.windowManagement.window.size, self.player)
 
@@ -102,9 +105,8 @@ class Main:
             elif key == MOVE_WINDOW:
                 self.windowManagement.move()
 
-            # here exit method is called and when
-            # key is pressed it terminates auto clicker
             elif key == TERMINATE:
+                # self.click_thread.exit()
                 listener.stop()
 
         if exists(self.adjsDir):
@@ -114,14 +116,14 @@ class Main:
                     self.parse_adjs_file(line)
 
         self.windowManagement = WindowManagement()
-        sleep(2)
+        sleep(1)
         x, y = ask_pos()
 
         self.mouse = Controller()
         self.click_thread = ClickMouse(self.mouse)
-        self.click_thread.start()
+        # self.click_thread.start()
 
-        self.player = Player(self.windowManagement, self.click_thread, x, y)
+        self.player = Player(self.windowManagement, self.click_thread, GraphMap(maps=dofusMaps), x, y)
 
         with Listener(on_press=on_press) as listener:
             listener.join()

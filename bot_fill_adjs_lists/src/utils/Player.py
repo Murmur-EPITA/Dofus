@@ -1,9 +1,9 @@
-from src.utils.ClickMouse import ClickMouse
+from src.utils.DIRECTION import Direction
 from src.utils.WindowManagement import WindowManagement
 
 
 class PosX:
-    def __init__(self, player, mouse: ClickMouse, pos: int):
+    def __init__(self, player, mouse, pos: int):
         self.player = player
         self.mouse = mouse
         self.pos = pos
@@ -21,7 +21,7 @@ class PosX:
 
 
 class PosY:
-    def __init__(self, player, mouse: ClickMouse, pos: int):
+    def __init__(self, player, mouse, pos: int):
         self.player = player
         self.mouse = mouse
         self.pos = pos
@@ -39,7 +39,8 @@ class PosY:
 
 
 class Player:
-    def __init__(self, window: WindowManagement, mouse: ClickMouse, x, y):
+    direction: Direction | None = None
+    def __init__(self, window: WindowManagement, mouse, x, y):
         self.windowManagement = window
         self.mouse = mouse
         self.posX = PosX(self, mouse, x)

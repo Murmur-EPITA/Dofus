@@ -1,0 +1,6 @@
+pynput
+pygetwindow
+cython
+opencv-python
+pyautogui
+networkx
