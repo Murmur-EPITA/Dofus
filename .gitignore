@@ -12,3 +12,6 @@ auto-clicker/.idea/misc.xml
 *.xml
 *.c
 bot_fill_adjs_lists_C/
+auto-bot_adjs_lists/src/img/screenshots/last_pos.txt
+auto-bot_adjs_lists/src/img/screenshots/pos.png
+auto-bot_adjs_lists/src/img/screenshots/pos_final.png

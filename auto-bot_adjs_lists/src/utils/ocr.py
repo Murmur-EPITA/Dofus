@@ -15,7 +15,7 @@ def take_screenshot(window: Window):
     filename = "src/img/screenshots/pos.png"
     screenshot(filename, region=(window.topleft[0] + 8,
                                  window.topleft[1] + 30,
-                                 window.topleft[0] + getPercent(30, window.size[0]),
+                                 window.topleft[0] + getPercent(50, window.size[0]),
                                  window.topleft[1] + getPercent(8, window.size[1]),
                                  ))
     return filename
@@ -33,6 +33,10 @@ def check_minus(x: str) -> str:
         x = x.replace(':', '-', 1)
     elif x[0] == ';':
         x = x.replace(';', '-', 1)
+    elif x[0] == '"':
+        x = x.replace('"', '-', 1)
+    elif x[0] == '“':
+        x = x.replace('“', '-', 1)
     return x
 
 
@@ -67,10 +71,14 @@ def get_square_infos(window: Window):
         secondLine: str = tmp[1]
 
         result = search(r"([\w\séèêàâîïûü’']+).[{(](.+)[})]", firstLine)
+        if result is None:
+            result = search(r"([\w\séèêàâîïûü’']+).{1,2}[{(]?(.+)[})]?", firstLine)
+
         city: str = result.group(1)
         place: str = result.group(2)
+        print(city, place)
 
-        result = search(r"([-~:;]?[\d]+)[,;|\[\]:] ?([-~:;]?[\d]+)", secondLine)
+        result = search(r"([-~:;\"“]?[\d]+)[,;|\[\]:] ?([-~:;]?[\d]+)", secondLine)
         x: str = result.group(1)
         y: str = result.group(2)
         x, y = check_minus(x), check_minus(y)
