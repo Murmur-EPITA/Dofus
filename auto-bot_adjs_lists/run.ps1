@@ -1,2 +1,2 @@
-$env:Path += "D:\Tesseract-OCR;"
+$env:Path += "F:\Tesseract-OCR;"
 .\venv\Scripts\python.exe -m src.main

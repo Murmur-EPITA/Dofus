@@ -12,7 +12,6 @@ from src.tkinter_frames.position import ask_pos
 from src.utils.DIRECTION import Direction
 from src.graph.MAP import dofusMaps
 from src.utils.ocr import get_square_infos, ScreenScanner
-from src.utils.other import getPercent
 from src.utils.write_resources import adjs, get_adjs
 
 
@@ -73,16 +72,16 @@ class Main:
         def on_press(key: KeyCode | Key):
 
             if key == UP_ARROW:
-                self.click_thread.go_up(self.windowManagement.window, self.player)
+                self.click_thread.go_up(self.windowManagement.window)
 
             elif key == RIGHT_ARROW:
-                self.click_thread.go_right(self.windowManagement.window, self.player)
+                self.click_thread.go_right(self.windowManagement.window)
 
             elif key == DOWN_ARROW:
-                self.click_thread.go_down(self.windowManagement.window, self.player)
+                self.click_thread.go_down(self.windowManagement.window)
 
             elif key == LEFT_ARROW:
-                self.click_thread.go_left(self.windowManagement.window, self.player)
+                self.click_thread.go_left(self.windowManagement.window)
 
             elif key == LOAD_POS:
                 try:

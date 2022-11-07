@@ -16,7 +16,7 @@ def take_screenshot(window: Window):
     screenshot(filename, region=(window.topleft[0] + 8,
                                  window.topleft[1] + 30,
                                  window.topleft[0] + getPercent(50, window.size[0]),
-                                 window.topleft[1] + getPercent(8, window.size[1]),
+                                 window.topleft[1] + getPercent(10, window.size[1]),
                                  ))
     return filename
 

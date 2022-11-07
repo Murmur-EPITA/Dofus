@@ -14,7 +14,7 @@ class ClickMouse:
         self.program_running = True
         print('ClickMouse created.')
 
-    def go_up(self, window: pyautogui.Window, player: Player):
+    def go_up(self, window: pyautogui.Window):
         '''
         Go on upper case, y position is decremented by one.
         :param window:
@@ -33,7 +33,7 @@ class ClickMouse:
                          y=window.topleft[1] + window.size[1] / 2,
                          duration=0.5)
 
-    def go_right(self, window: pyautogui.Window, player: Player):
+    def go_right(self, window: pyautogui.Window):
         '''
         Go on right case, x position is incremented by one.
         :param window:
@@ -51,7 +51,7 @@ class ClickMouse:
                          y=window.topleft[1] + window.size[1] / 2,
                          duration=0.5)
 
-    def go_down(self, window: pyautogui.Window, player: Player):
+    def go_down(self, window: pyautogui.Window):
         '''
         Go on lower case, y position is incremented by one.
         :param player:
@@ -68,7 +68,7 @@ class ClickMouse:
                          y=window.topleft[1] + window.size[1] / 2,
                          duration=0.5)
 
-    def go_left(self, window: pyautogui.Window, player: Player):
+    def go_left(self, window: pyautogui.Window):
         '''
         Go on left case, x position is decremented by one.
         :param player:

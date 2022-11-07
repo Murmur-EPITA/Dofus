@@ -45,14 +45,14 @@ class Player:
         for squareId in path:
             xtmp, ytmp = (int(lol) for lol in squareId.split(','))
             if x < xtmp:
-                self.mouse.go_right(self.windowManagement.window.size, self)
+                self.mouse.go_right(self.windowManagement.window)
             elif x > xtmp:
-                self.mouse.go_left(self.windowManagement.window.size, self)
+                self.mouse.go_left(self.windowManagement.window)
             elif y < ytmp:
-                self.mouse.go_down(self.windowManagement.window.size, self)
+                self.mouse.go_down(self.windowManagement.window)
             elif y > ytmp:
-                self.mouse.go_up(self.windowManagement.window.size, self)
-            # sleep(DELAY_CLICK)
+                self.mouse.go_up(self.windowManagement.window)
+            sleep(DELAY_CLICK)
         print("Arrived at pos", self.get_id())
 
 
