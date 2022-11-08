@@ -1,5 +1,6 @@
 import pyautogui
-from numpy import array
+# from numpy import array
+import numpy as np
 from re import search
 from pyautogui import screenshot, Window
 from threading import Thread
@@ -14,7 +15,7 @@ from src.utils.Player import Player
 def take_screenshot(window: Window):
     filename = "src/img/screenshots/pos.png"
     screenshot(filename, region=(window.topleft[0] + 8,
-                                 window.topleft[1] + 30,
+                                 window.topleft[1] + 34,
                                  window.topleft[0] + getPercent(50, window.size[0]),
                                  window.topleft[1] + getPercent(10, window.size[1]),
                                  ))
@@ -49,16 +50,31 @@ def get_square_infos(window: Window):
     if window.isMinimized:
         window.activate()
         window.restore()
-    # savePos = pyautogui.position()
-    # pyautogui.moveTo(10, window.size[1] - 30)
     image = cv2.imread(take_screenshot(window))
-    # pyautogui.moveTo(savePos)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
+    def trim(frame):
+        # crop top
+        if not np.sum(frame[0]):
+            return trim(frame[1:])
+        # crop bottom
+        elif not np.sum(frame[-1]):
+            return trim(frame[:-1])
+        # crop left
+        elif not np.sum(frame[:, 0]):
+            return trim(frame[:, 1:])
+            # crop right
+        elif not np.sum(frame[:, -1]):
+            return trim(frame[:, :-1])
+        return frame
+
     sensitivity = 30
-    lower_white = array([0, 0, 255 - sensitivity])
-    upper_white = array([255, sensitivity, 255])
+    lower_white = np.array([0, 0, 255 - sensitivity])
+    upper_white = np.array([255, sensitivity, 255])
     mask = cv2.inRange(hsv, lower_white, upper_white)
+
+    mask = trim(mask)
+    mask = cv2.copyMakeBorder(mask, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=0)
     cv2.imwrite('src/img/screenshots/pos_final.png', mask)
 
     text: str = pytesseract.image_to_string(mask)
