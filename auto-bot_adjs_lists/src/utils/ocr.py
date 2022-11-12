@@ -1,5 +1,4 @@
 import pyautogui
-# from numpy import array
 import numpy as np
 from re import search
 from pyautogui import screenshot, Window
@@ -10,6 +9,7 @@ import pytesseract
 
 from src.utils.other import getPercent
 from src.utils.Player import Player
+from src.object_recognition import ObjectRecognition
 
 
 def take_screenshot(window: Window):
@@ -129,4 +129,8 @@ class ScreenScanner(Thread):
                         self.player.windowManagement.window)
                 except TypeError:
                     stop_for_x_seconds()
+            pos = ObjectRecognition.recognize(self.player.windowManagement.window)
+            print(pos)
+            if pos is not None:
+                pyautogui.click(pos)
             sleep(3)
